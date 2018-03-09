@@ -1,3 +1,3 @@
-Download this project
-run npm install in console
-run npm start to start app in console
+1. Download this project
+2. run npm install in console
+3. run npm start to start app in console
