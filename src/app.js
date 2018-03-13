@@ -1,14 +1,16 @@
 import { createStore } from 'redux';
 
 const reducer = (state, action) => {
+    let newState=[...state]
     switch (action.type) {
         case 'ADD':
             {
-                var maxIndex = Math.max.apply(Math, state.map(o => o._id));
+                var maxIndex = Math.max.apply(Math, newState.map(o => o._id));
                 var id = maxIndex + 1;
                 var array = action.payload;
                 array._id = id;
-                state.push(array);
+                
+                newState.push(array);
                 console.log("Contact add completed successfully");
                 break;
             }
@@ -16,9 +18,9 @@ const reducer = (state, action) => {
         case 'DELETE':
             {
 
-                var index = state.map(function (item) { return item._id; })
+                var index = newState.map(function (item) { return item._id; })
                     .indexOf(parseInt(action.payload._id) ? parseInt(action.payload._id) : 0);
-                state.splice(index, 1);
+                    newState.splice(index, 1);
                 if (index == -1) {
                     console.log("delete index not valid");
                 }
@@ -31,7 +33,7 @@ const reducer = (state, action) => {
             {
 
 
-                var index = state.map(item => item._id)
+                var index = newState.map(item => item._id)
                     .indexOf(parseInt(action.payload._id) ? parseInt(action.payload._id) : 0);
 
                 if (index == -1) {
@@ -40,14 +42,14 @@ const reducer = (state, action) => {
                 else {
                     var obj = {
                         _id: action.payload._id,
-                        name: action.payload.name == '' ? state[index].name : action.payload.name,
-                        company: action.payload.company == '' ? state[index].company : action.payload.company,
-                        designation: action.payload.designation == '' ? state[index].designation : action.payload.designation,
-                        age: action.payload.age == '' ? state[index].age : action.payload.age,
-                        location: action.payload.location == '' ? state[index].location : action.payload.location,
+                        name: action.payload.name == '' ? newState[index].name : action.payload.name,
+                        company: action.payload.company == '' ? newState[index].company : action.payload.company,
+                        designation: action.payload.designation == '' ? newState[index].designation : action.payload.designation,
+                        age: action.payload.age == '' ? newState[index].age : action.payload.age,
+                        location: action.payload.location == '' ? newState[index].location : action.payload.location,
                         image: '../images/upload.jpg'
                     }
-                    state[index] = action.payload;
+                    newState[index] = obj;
                     console.log("Contact updation completed successfully");
                 }
 
@@ -55,11 +57,11 @@ const reducer = (state, action) => {
                 break;
             }
         case 'SHOWALL': {
-            console.log(state);
+            console.log(newState);
         }
         default:
     }
-    return state;
+    return newState;
 }
 const contactList = [
     { _id: 1, name: 'Debopoma Chaudhury', company: 'Netwoven', designation: 'Senior Engineer', age: '32 yrs', location: 'Kolkata', image: '../images/dc.png' },

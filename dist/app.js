@@ -2,17 +2,21 @@
 
 var _redux = require('redux');
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var reducer = function reducer(state, action) {
+    var newState = [].concat(_toConsumableArray(state));
     switch (action.type) {
         case 'ADD':
             {
-                var maxIndex = Math.max.apply(Math, state.map(function (o) {
+                var maxIndex = Math.max.apply(Math, newState.map(function (o) {
                     return o._id;
                 }));
                 var id = maxIndex + 1;
                 var array = action.payload;
                 array._id = id;
-                state.push(array);
+
+                newState.push(array);
                 console.log("Contact add completed successfully");
                 break;
             }
@@ -20,10 +24,10 @@ var reducer = function reducer(state, action) {
         case 'DELETE':
             {
 
-                var index = state.map(function (item) {
+                var index = newState.map(function (item) {
                     return item._id;
                 }).indexOf(parseInt(action.payload._id) ? parseInt(action.payload._id) : 0);
-                state.splice(index, 1);
+                newState.splice(index, 1);
                 if (index == -1) {
                     console.log("delete index not valid");
                 } else {
@@ -34,7 +38,7 @@ var reducer = function reducer(state, action) {
         case 'UPDATE':
             {
 
-                var index = state.map(function (item) {
+                var index = newState.map(function (item) {
                     return item._id;
                 }).indexOf(parseInt(action.payload._id) ? parseInt(action.payload._id) : 0);
 
@@ -43,14 +47,14 @@ var reducer = function reducer(state, action) {
                 } else {
                     var obj = {
                         _id: action.payload._id,
-                        name: action.payload.name == '' ? state[index].name : action.payload.name,
-                        company: action.payload.company == '' ? state[index].company : action.payload.company,
-                        designation: action.payload.designation == '' ? state[index].designation : action.payload.designation,
-                        age: action.payload.age == '' ? state[index].age : action.payload.age,
-                        location: action.payload.location == '' ? state[index].location : action.payload.location,
+                        name: action.payload.name == '' ? newState[index].name : action.payload.name,
+                        company: action.payload.company == '' ? newState[index].company : action.payload.company,
+                        designation: action.payload.designation == '' ? newState[index].designation : action.payload.designation,
+                        age: action.payload.age == '' ? newState[index].age : action.payload.age,
+                        location: action.payload.location == '' ? newState[index].location : action.payload.location,
                         image: '../images/upload.jpg'
                     };
-                    state[index] = action.payload;
+                    newState[index] = obj;
                     console.log("Contact updation completed successfully");
                 }
 
@@ -58,11 +62,11 @@ var reducer = function reducer(state, action) {
             }
         case 'SHOWALL':
             {
-                console.log(state);
+                console.log(newState);
             }
         default:
     }
-    return state;
+    return newState;
 };
 var contactList = [{ _id: 1, name: 'Debopoma Chaudhury', company: 'Netwoven', designation: 'Senior Engineer', age: '32 yrs', location: 'Kolkata', image: '../images/dc.png' }, { _id: 2, name: 'Sanjukta Das', company: 'JP Morgan', designation: 'Project Lead', age: '31 yrs', location: 'Singapore', image: '../images/upload.jpg' }, { _id: 3, name: 'Suhit Saha', company: 'Prana', designation: 'Technical Producer', age: '31 yrs', location: 'Mumbai', image: '../images/upload.jpg' }, { _id: 4, name: 'Kumaresh Roy', company: 'Royal Chem', designation: 'CEO', age: '32 yrs', location: 'Kolkata', image: '../images/upload.jpg' }];
 var store = (0, _redux.createStore)(reducer, contactList);
